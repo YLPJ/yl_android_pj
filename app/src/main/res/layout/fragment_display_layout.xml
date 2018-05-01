@@ -1,0 +1,219 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_title_green"
+    android:orientation="vertical"
+    tools:context="com.liwen.dor.ui.fragment.DisplayLayoutFragment">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/color_title_green"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="wrap_content"
+            android:layout_height="49dp"
+            android:src="@mipmap/logo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="wrap_content"
+            android:layout_height="49dp"
+            android:src="@mipmap/login_text_logo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView4"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <ListView
+                android:id="@+id/list_fDisplayLayout_sources"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:listSelector="@color/color_bg_blue" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="10"
+                android:orientation="horizontal">
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/constraintLayout_fDisplayLayout_monitor"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone">
+
+                    <Button
+                        android:id="@+id/button_fDisplayLayout_monitor1"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:text="Button"
+                        app:layout_constraintBottom_toTopOf="@+id/button_fDisplayLayout_monitor3"
+                        app:layout_constraintEnd_toStartOf="@+id/button_fDisplayLayout_monitor2"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Button
+                        android:id="@+id/button_fDisplayLayout_monitor2"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:text="Button"
+                        app:layout_constraintBottom_toTopOf="@+id/button_fDisplayLayout_monitor4"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/button_fDisplayLayout_monitor1"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Button
+                        android:id="@+id/button_fDisplayLayout_monitor3"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:text="Button"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/button_fDisplayLayout_monitor4"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/button_fDisplayLayout_monitor1" />
+
+                    <Button
+                        android:id="@+id/button_fDisplayLayout_monitor4"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:text="Button"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/button_fDisplayLayout_monitor3"
+                        app:layout_constraintTop_toBottomOf="@+id/button_fDisplayLayout_monitor2" />
+
+
+                </android.support.constraint.ConstraintLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayout_fDisplayLayout_splitScreen"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <android.support.constraint.ConstraintLayout
+                        android:id="@+id/constraintLayout_fDisplayLayout_splitScreen"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3">
+
+                    </android.support.constraint.ConstraintLayout>
+
+                    <ScrollView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+
+                            <ImageButton
+                                android:id="@+id/imageButton_fDisplayLayout_screen1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:adjustViewBounds="true"
+                                android:scaleType="fitXY"
+                                android:src="@mipmap/split_screen01" />
+
+                            <ImageButton
+                                android:id="@+id/imageButton_fDisplayLayout_screen2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:adjustViewBounds="true"
+                                android:scaleType="fitXY"
+                                android:src="@mipmap/split_screen02" />
+
+                            <ImageButton
+                                android:id="@+id/imageButton_fDisplayLayout_screen3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:adjustViewBounds="true"
+                                android:scaleType="fitXY"
+                                android:src="@mipmap/split_screen03" />
+
+                            <ImageButton
+                                android:id="@+id/imageButton_fDisplayLayout_screen4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:adjustViewBounds="true"
+                                android:scaleType="fitXY"
+                                android:src="@mipmap/split_screen04" />
+
+                            <ImageButton
+                                android:id="@+id/imageButton_fDisplayLayout_screen5"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:adjustViewBounds="true"
+                                android:scaleType="fitXY"
+                                android:src="@mipmap/split_screen05" />
+
+                            <ImageButton
+                                android:id="@+id/imageButton_fDisplayLayout_screen6"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:adjustViewBounds="true"
+                                android:scaleType="fitXY"
+                                android:src="@mipmap/split_screen06" />
+
+
+                        </LinearLayout>
+                    </ScrollView>
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+            <ToggleButton
+                android:id="@+id/toggleButton_displayLayout_switchSettings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_weight="1"
+                android:checked="true"
+                android:textOff="多屏幕"
+                android:textOn="多屏幕" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>
