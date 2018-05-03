@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.liwen.dor.R;
+import com.liwen.dor.ui.fragment.ControlLayoutFragment;
 import com.liwen.dor.ui.fragment.DisplayLayoutFragment;
 
 import butterknife.BindView;
@@ -35,10 +36,11 @@ public class MainActivity extends AppCompatActivity {
                     doDisplayLayout();
                     return true;
                 case R.id.navigation_dashboard:
-//                    mTextMessage.setText(R.string.title_dashboard);
+                    doControlLayout();
                     return true;
                 case R.id.navigation_notifications:
-//                    mTextMessage.setText(R.string.title_notifications);
+                    doDisplayLayout3();
+
                     return true;
             }
             return false;
@@ -52,11 +54,25 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.frameLayout_main, displayLayout);
         transaction.commit();
     }
+    private void doControlLayout(){
+        ControlLayoutFragment controlLayout = ControlLayoutFragment.newInstance("","");
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager. beginTransaction();
+        transaction.replace(R.id.frameLayout_main, controlLayout);
+        transaction.commit();
+    }
+    private void doDisplayLayout3(){
+        DisplayLayoutFragment displayLayout = DisplayLayoutFragment.newInstance("","");
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager. beginTransaction();
+        transaction.replace(R.id.frameLayout_main, displayLayout);
+        transaction.commit();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        ButterKnife.bind(this);//批量获取控件
         mNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         init();
     }

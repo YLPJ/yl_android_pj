@@ -74,7 +74,7 @@
                     android:id="@+id/constraintLayout_fDisplayLayout_monitor"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <Button
                         android:id="@+id/button_fDisplayLayout_monitor1"
@@ -124,7 +124,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/constraintLayout_fDisplayLayout_splitScreen"

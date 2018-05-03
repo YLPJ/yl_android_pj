@@ -62,10 +62,12 @@ public class DisplayLayoutFragment extends Fragment implements AdapterView.OnIte
     String[] sources = {"全景相机", "术野摄像机", "无影灯", "手术床", "吊塔"};
 
 
+    //---构造必须-----
     public DisplayLayoutFragment() {
         // Required empty public constructor
     }
 
+    //------------chao-----------------
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -74,6 +76,7 @@ public class DisplayLayoutFragment extends Fragment implements AdapterView.OnIte
      * @param param2 Parameter 2.
      * @return A new instance of fragment DisplayLayoutFragment.
      */
+
     // TODO: Rename and change types and number of parameters
     public static DisplayLayoutFragment newInstance(String param1, String param2) {
         DisplayLayoutFragment fragment = new DisplayLayoutFragment();
@@ -106,7 +109,14 @@ public class DisplayLayoutFragment extends Fragment implements AdapterView.OnIte
         return contentView;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().unregister(this);
+    }
 
+    //-------------chao end----------------
     private void init() {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
@@ -116,12 +126,7 @@ public class DisplayLayoutFragment extends Fragment implements AdapterView.OnIte
     }
 
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (EventBus.getDefault().isRegistered(this))
-            EventBus.getDefault().unregister(this);
-    }
+
 
     /**
      * 前台触发事件
