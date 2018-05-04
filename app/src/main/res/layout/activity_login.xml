@@ -104,13 +104,13 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/button_login_sign"
-                style="?android:textAppearanceSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="登录"
-                android:textStyle="bold" />
+                    android:id="@+id/button_login_sign"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="登录"
+                    android:textStyle="bold"/>
 
             <Button
                 android:id="@+id/button_login_exit"

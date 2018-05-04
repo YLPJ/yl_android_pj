@@ -1,43 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.liwen.dor.ui.MainActivity">
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:id="@+id/container"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             tools:context="com.liwen.dor.ui.MainActivity">
+
+    <android.support.design.widget.AppBarLayout
+            android:layout_height="44dp"
+            android:layout_width="match_parent"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            android:id="@+id/appBarLayout"
+            app:layout_constraintStart_toStartOf="parent"
+    >
+        <FrameLayout android:layout_width="match_parent"
+                     android:layout_height="match_parent">
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@mipmap/main_banner"
+                    android:id="@+id/imageView" android:scaleType="fitXY"/>
+            <ImageView
+                    android:layout_width="255dp"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@mipmap/logo2"
+                    android:id="@+id/imageView2"
+                    android:padding="5dp"
+            />
+
+        </FrameLayout>
 
 
+    </android.support.design.widget.AppBarLayout>
     <android.support.design.widget.BottomNavigationView
-        android:id="@+id/navigation_home"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/color_bottom"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/navigation"
-        app:itemTextColor="@color/color_white"/>
+            android:id="@+id/navigation_home"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/color_bottom"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:menu="@menu/navigation"
+            app:itemTextColor="@color/color_white"/>
 
     <FrameLayout
-        android:id="@+id/frameLayout_main"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/navigation_home"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+            android:id="@+id/frameLayout_main"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/navigation_home"
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
 
     </FrameLayout>
 
     <!--<android.support.v4.view.ViewPager-->
-        <!--android:id="@+id/viewPager_main"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="0dp"-->
-        <!--app:layout_constraintBottom_toTopOf="@+id/navigation"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="parent" />-->
-
+    <!--android:id="@+id/viewPager_main"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="0dp"-->
+    <!--app:layout_constraintBottom_toTopOf="@+id/navigation"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toTopOf="parent" />-->
 
 </android.support.constraint.ConstraintLayout>

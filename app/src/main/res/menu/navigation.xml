@@ -1,20 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:tools="http://schemas.android.com/tools"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/title_home" />
+            android:id="@+id/navigation_home"
+            android:icon="@mipmap/menu_video"
+            android:title="视频路由"
+            app:showAsAction="ifRoom"
+    />
 
     <item
-        android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/ic_explore_black_24dp"
-        android:title="@string/title_dashboard" />
+            android:id="@+id/navigation_dashboard"
+            android:icon="@mipmap/menu_control"
+            android:title="设备控制"
+            app:showAsAction="ifRoom"
+    />
 
     <item
-        android:id="@+id/navigation_notifications"
-        android:icon="@drawable/ic_person_black_24dp"
-        android:title="@string/title_notifications" />
+            android:id="@+id/navigation_notifications"
+            android:icon="@mipmap/menu_tech"
+            android:title="手术示教"
+            app:showAsAction="ifRoom"
+    />
 
 </menu>

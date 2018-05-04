@@ -117,7 +117,7 @@ public class LoginActivity extends AppCompatActivity  {
     private void getLoginExit(){
         String x="xxxx";
         String y ="yyyy";
-        HttpClient.newInit().aaa(x,y).enqueue(new Callback() {
+        HttpClient.newInit().getAllDisplay().enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 //http访问异常
@@ -128,7 +128,7 @@ public class LoginActivity extends AppCompatActivity  {
                 //http访问有返回
                 try {
 //                    doLoginTelData(response);
-                    EventBus.getDefault().post(new LoginActivityEvent(LoginActivityEvent.DO_SHOW_ERROR, String.valueOf(response.body())));
+                    EventBus.getDefault().post(new LoginActivityEvent(LoginActivityEvent.DO_SHOW_ERROR, String.valueOf(response.body().string())));
                 }catch (Exception ex){
                     ex.printStackTrace();
                 }

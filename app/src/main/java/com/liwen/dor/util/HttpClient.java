@@ -15,16 +15,17 @@ import okhttp3.Request;
  */
 
 public class HttpClient {
-    private static String url="http://www.baidu.com";
+    private static String url = "http://192.168.0.106:8888/api";
     private OkHttpClient client;
     private static HttpClient httpClient;
-    public static HttpClient newInit(){
-        if (null==httpClient){
-            httpClient=new HttpClient();
+
+    public static HttpClient newInit() {
+        if (null == httpClient) {
+            httpClient = new HttpClient();
             httpClient.client = new OkHttpClient
                     .Builder()
                     .connectTimeout(5, TimeUnit.SECONDS)
-                    .writeTimeout(10,TimeUnit.SECONDS)
+                    .writeTimeout(10, TimeUnit.SECONDS)
                     .readTimeout(10, TimeUnit.SECONDS)
                     .build();
         }
@@ -32,14 +33,21 @@ public class HttpClient {
     }
 
 
-
-        public Call aaa(String x, String y){
+    public Call aaa(String x, String y) {
 //            String path = "/app/loginTel";
-            String path = "";
-            Request request=new Request.Builder().get()
-                    .url(url+path+"?x="+x+"&y="+y)
-                    .build();
-            return client.newCall(request);
-        }
+        String path = "/getDisplay";
+        Request request = new Request.Builder().get()
+                .url(url + path + "?x=" + x + "&y=" + y)
+                .build();
+        return client.newCall(request);
+    }
 
+    public Call getAllDisplay() {
+//            String path = "/app/loginTel";
+        String path = "/getDisplay";
+        Request request = new Request.Builder().get()
+                .url(url + path)
+                .build();
+        return client.newCall(request);
+    }
 }
