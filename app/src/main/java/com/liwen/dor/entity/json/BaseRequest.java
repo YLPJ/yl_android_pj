@@ -1,26 +1,11 @@
 package com.liwen.dor.entity.json;
 
+import java.util.List;
+
 /**
  * Created by chenly on 2017/11/4.
  */
 
-public class BaseRequest {
-    private int RequestCode;
-    private String RequestMessage;
+public class BaseRequest<T> {
 
-    public int getRequestCode() {
-        return RequestCode;
-    }
-
-    public void setRequestCode(int requestCode) {
-        RequestCode = requestCode;
-    }
-
-    public String getRequestMessage() {
-        return RequestMessage;
-    }
-
-    public void setRequestMessage(String requestMessage) {
-        RequestMessage = requestMessage;
-    }
 }

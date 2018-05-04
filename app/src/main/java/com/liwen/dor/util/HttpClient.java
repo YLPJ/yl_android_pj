@@ -50,4 +50,13 @@ public class HttpClient {
                 .build();
         return client.newCall(request);
     }
+
+    public Call login(String name, String pwd) {
+//            String path = "/app/loginTel";
+        String path = "/login";
+        Request request = new Request.Builder().get()
+                .url(String.format("%s%s?u=%s&pwd=%s", url, path, name, pwd))
+                .build();
+        return client.newCall(request);
+    }
 }

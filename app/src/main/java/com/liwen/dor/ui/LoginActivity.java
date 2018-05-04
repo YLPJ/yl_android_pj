@@ -37,7 +37,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.Gson;
 import com.liwen.dor.R;
+import com.liwen.dor.entity.BaseEvent;
+import com.liwen.dor.entity.json.CommonResponse;
+import com.liwen.dor.entity.json.DisplayResponse;
 import com.liwen.dor.util.HttpClient;
 
 import org.greenrobot.eventbus.EventBus;
@@ -56,12 +60,13 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity  {
+public class LoginActivity extends AppCompatActivity {
 
     @BindView(R.id.userName_login)
     EditText mUserNameEt;
     @BindView(R.id.password_login)
     EditText mPasswordEt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +77,7 @@ public class LoginActivity extends AppCompatActivity  {
         init();
     }
 
-    private void init(){
+    private void init() {
 
     }
 
@@ -90,60 +95,65 @@ public class LoginActivity extends AppCompatActivity  {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMainEvent(LoginActivityEvent event) {
-        switch (event.code) {
+        switch (event.getCode()) {
+            case 0:
+                startActivity(new Intent(this, MainActivity.class));
+                break;
+            case LoginActivityEvent.DO_LOGIN_YZ:
+                showMsg("用户名或密码错误");
+                break;
             case LoginActivityEvent.DO_SHOW_ERROR:
-                aaa(event.massage);
+                showMsg(event.getMassage());
                 break;
         }
     }
+
     @OnClick({R.id.button_login_sign,
-    R.id.button_login_exit})
-    public void buttonOnClick(View v){
-        switch (v.getId()){
-            case R.id.button_login_sign:{
+            R.id.button_login_exit})
+    public void buttonOnClick(View v) {
+        switch (v.getId()) {
+            case R.id.button_login_sign: {
                 doMainActivity();
             }
-                break;
+            break;
             case R.id.button_login_exit:
-                getLoginExit();
                 break;
         }
     }
 
-    private void doMainActivity(){
-        startActivity(new Intent(this,MainActivity.class));
-    }
-
-    private void getLoginExit(){
-        String x="xxxx";
-        String y ="yyyy";
-        HttpClient.newInit().getAllDisplay().enqueue(new Callback() {
+    private void doMainActivity() {
+        HttpClient.newInit().login(mUserNameEt.getText().toString(), mPasswordEt.getText().toString()).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 //http访问异常
+                EventBus.getDefault().post(new LoginActivityEvent(-1, "服务器连接失败"));
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 //http访问有返回
                 try {
-//                    doLoginTelData(response);
-                    EventBus.getDefault().post(new LoginActivityEvent(LoginActivityEvent.DO_SHOW_ERROR, String.valueOf(response.body().string())));
-                }catch (Exception ex){
+
+                    Gson gson = new Gson();
+                    CommonResponse dr = gson.fromJson(response.body().string(), CommonResponse.class);
+                    EventBus.getDefault().post(new LoginActivityEvent(dr.getErrorCode(), dr.getMessage()));
+                } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             }
         });
-    }
-    private void aaa(String message){
 
-        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+    }
+
+    private void showMsg(String message) {
+
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     /**
      * 事件
      */
-    private static class LoginActivityEvent {
+    private static class LoginActivityEvent extends BaseEvent {
         /**
          * 参数判断完成,开始访问后台
          */
@@ -151,25 +161,16 @@ public class LoginActivity extends AppCompatActivity  {
         private static final int DO_UPDATE_UI = 0X02;
         private static final int DO_LOGIN_YZ = 0X03;
         private static final int DO_SHOW_ERROR = 0X04;
-        final int code;
-        String massage;
-        String userTel;
-        String userPassWord;
 
         LoginActivityEvent(int code) {
-            this.code = code;
+            setCode(code);
         }
 
         LoginActivityEvent(int code, String massage) {
-            this.code = code;
-            this.massage = massage;
+            setCode(code);
+            setMassage(massage);
         }
 
-        LoginActivityEvent(int code, String userTel, String userPassWord) {
-            this.code = code;
-            this.userTel = userTel;
-            this.userPassWord = userPassWord;
-        }
 
     }
 }
