@@ -31,15 +31,25 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.liwen.dor.R;
+import com.liwen.dor.util.HttpClient;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -57,6 +67,8 @@ public class LoginActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
         init();
     }
 
@@ -64,7 +76,26 @@ public class LoginActivity extends AppCompatActivity  {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().unregister(this);
+    }
 
+    /**
+     * 前台处理事件
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMainEvent(LoginActivityEvent event) {
+        switch (event.code) {
+            case LoginActivityEvent.DO_SHOW_ERROR:
+                aaa(event.massage);
+                break;
+        }
+    }
     @OnClick({R.id.button_login_sign,
     R.id.button_login_exit})
     public void buttonOnClick(View v){
@@ -74,12 +105,72 @@ public class LoginActivity extends AppCompatActivity  {
             }
                 break;
             case R.id.button_login_exit:
+                getLoginExit();
                 break;
         }
     }
 
     private void doMainActivity(){
         startActivity(new Intent(this,MainActivity.class));
+    }
+
+    private void getLoginExit(){
+        String x="xxxx";
+        String y ="yyyy";
+        HttpClient.newInit().aaa(x,y).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //http访问异常
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                //http访问有返回
+                try {
+//                    doLoginTelData(response);
+                    EventBus.getDefault().post(new LoginActivityEvent(LoginActivityEvent.DO_SHOW_ERROR, String.valueOf(response.body())));
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                }
+            }
+        });
+    }
+    private void aaa(String message){
+
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * 事件
+     */
+    private static class LoginActivityEvent {
+        /**
+         * 参数判断完成,开始访问后台
+         */
+        private static final int DO_UPDATE_CONFIRM = 0X01;
+        private static final int DO_UPDATE_UI = 0X02;
+        private static final int DO_LOGIN_YZ = 0X03;
+        private static final int DO_SHOW_ERROR = 0X04;
+        final int code;
+        String massage;
+        String userTel;
+        String userPassWord;
+
+        LoginActivityEvent(int code) {
+            this.code = code;
+        }
+
+        LoginActivityEvent(int code, String massage) {
+            this.code = code;
+            this.massage = massage;
+        }
+
+        LoginActivityEvent(int code, String userTel, String userPassWord) {
+            this.code = code;
+            this.userTel = userTel;
+            this.userPassWord = userPassWord;
+        }
+
     }
 }
 
