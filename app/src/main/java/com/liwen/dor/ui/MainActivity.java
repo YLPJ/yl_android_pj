@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     };
+    DisplayLayoutFragment displayLayout;
+    ControlLayoutFragment controlLayout;
 
     private void doDisplayLayout(){
         DisplayLayoutFragment displayLayout = DisplayLayoutFragment.newInstance("","");

@@ -15,7 +15,7 @@ import okhttp3.Request;
  */
 
 public class HttpClient {
-    private static String url = "http://192.168.0.106:8888/api";
+    private static String url = "http://192.168.0.107:8888/api";
     private OkHttpClient client;
     private static HttpClient httpClient;
 
@@ -59,4 +59,6 @@ public class HttpClient {
                 .build();
         return client.newCall(request);
     }
+
+
 }
