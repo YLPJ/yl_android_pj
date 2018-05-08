@@ -49,10 +49,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@mipmap/login_text_logo" />
 
+    <Button
+        android:id="@+id/button_netseting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:text="网络设置"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
         android:id="@+id/email_login_form"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="127dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -74,8 +84,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:singleLine="true"
-                    />
+                    android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -104,13 +113,13 @@
             android:orientation="vertical">
 
             <Button
-                    android:id="@+id/button_login_sign"
-                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="登录"
-                    android:textStyle="bold"/>
+                android:id="@+id/button_login_sign"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="登录"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/button_login_exit"
@@ -125,5 +134,7 @@
 
 
     </LinearLayout>
+
+
     <!--</ScrollView>-->
 </android.support.constraint.ConstraintLayout>

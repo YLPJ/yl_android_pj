@@ -16,15 +16,8 @@ public interface SPConstant {
     /**
      *
      */
-    String SP_USER_BASE = "saveUserBase";
+    String IP_TEXT = "ip_text";
 
-    String SP_USER_AND_EQUIPMENT = "saveUserAndEquipment";
-
-//    String SP_CITY_BASE = "saveCityBase";
-    /**
-     *
-     */
-    String SP_USER_NAMES = "user_names";
     /**
      * 系统下载ID
      */

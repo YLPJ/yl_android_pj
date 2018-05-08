@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -37,6 +38,10 @@ public class LoginActivity extends AppCompatActivity {
     EditText mUserNameEt;
     @BindView(R.id.password_login)
     EditText mPasswordEt;
+
+    @BindView(R.id.button_netseting)
+    Button button_netseting;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +86,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @OnClick({R.id.button_login_sign,
-            R.id.button_login_exit})
+            R.id.button_login_exit,
+            R.id.button_netseting})
     public void buttonOnClick(View v) {
         switch (v.getId()) {
             case R.id.button_login_sign: {
@@ -89,6 +95,10 @@ public class LoginActivity extends AppCompatActivity {
             }
             break;
             case R.id.button_login_exit:
+                break;
+            case R.id.button_netseting:
+                //TODO 跳转到网络设置页面，并且不消亡本页面（设置网络后返回本页的时候不需要新new）
+                startActivity(new Intent(this, IPconfigActivity.class));
                 break;
         }
     }
