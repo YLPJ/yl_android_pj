@@ -53,6 +53,8 @@ public class IPconfigActivity extends Activity {
                 String ip_text=editText_ipconfig.getText().toString();
                 SpUtil.saveSP(SPConstant.IP_TEXT,ip_text);
                 Toast.makeText(this, "配置完成", Toast.LENGTH_SHORT).show();
+
+                finish();//保存完成 后消亡 本Activity，形成一个回到登陆页面的交互效果
                 break;
 
         }
