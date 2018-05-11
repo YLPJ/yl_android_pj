@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onMainEvent(LoginActivityEvent event) {
         switch (event.getCode()) {
             case 0:
-                //startActivity(new Intent(this, MainActivity.class));
+                startActivity(new Intent(this, MainActivity.class));
                 break;
             case LoginActivityEvent.DO_LOGIN_YZ:
                 showMsg("用户名或密码错误");
@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
                 showMsg(event.getMassage());
                 break;
         }
-        startActivity(new Intent(this, MainActivity.class));
+        //startActivity(new Intent(this, MainActivity.class));
     }
 
     @OnClick({R.id.button_login_sign,

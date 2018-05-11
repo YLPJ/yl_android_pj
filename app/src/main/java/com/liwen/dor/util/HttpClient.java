@@ -1,5 +1,6 @@
 package com.liwen.dor.util;
 
+import com.liwen.dor.constant.SPConstant;
 import org.xutils.HttpManager;
 
 import java.util.concurrent.TimeUnit;
@@ -29,21 +30,16 @@ public class HttpClient {
                     .readTimeout(10, TimeUnit.SECONDS)
                     .build();
         }
+        String ip_text = SpUtil.getSP(SPConstant.IP_TEXT, String.class);//读取 本地保存的ip地址
+        if (!"null".equals(ip_text)) {
+            url = ip_text;
+        }
         return httpClient;
     }
 
 
-    public Call aaa(String x, String y) {
-//            String path = "/app/loginTel";
-        String path = "/getDisplay";
-        Request request = new Request.Builder().get()
-                .url(url + path + "?x=" + x + "&y=" + y)
-                .build();
-        return client.newCall(request);
-    }
 
     public Call getAllDisplay() {
-//            String path = "/app/loginTel";
         String path = "/getDisplay";
         Request request = new Request.Builder().get()
                 .url(url + path)
@@ -51,11 +47,24 @@ public class HttpClient {
         return client.newCall(request);
     }
 
+    public Call getAllSource(){
+        Request request = new Request.Builder().get()
+                .url(url + "/getAllSource")
+                .build();
+        return client.newCall(request);
+    }
+
     public Call login(String name, String pwd) {
-//            String path = "/app/loginTel";
         String path = "/login";
         Request request = new Request.Builder().get()
                 .url(String.format("%s%s?u=%s&pwd=%s", url, path, name, pwd))
+                .build();
+        return client.newCall(request);
+    }
+
+    public Call getMultiScreenState(){
+        Request request = new Request.Builder().get()
+                .url(url + "/getMultiState")
                 .build();
         return client.newCall(request);
     }

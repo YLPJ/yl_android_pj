@@ -1,12 +1,17 @@
 package com.liwen.dor.ui.fragment;
 
+import android.app.Application;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
@@ -20,8 +25,9 @@ import com.liwen.dor.R;
 
 import com.liwen.dor.entity.BaseEvent;
 import com.liwen.dor.entity.Display;
-import com.liwen.dor.entity.json.CommonResponse;
-import com.liwen.dor.entity.json.DisplayResponse;
+import com.liwen.dor.entity.MultiScreen;
+import com.liwen.dor.entity.Source;
+import com.liwen.dor.entity.json.*;
 import com.liwen.dor.ui.DisplayAdapter;
 import com.liwen.dor.ui.LoginActivity;
 import com.liwen.dor.ui.MainActivity;
@@ -54,6 +60,9 @@ public class DisplayLayoutFragment extends Fragment implements AdapterView.OnIte
     @BindView(R.id.list_fDisplayLayout_sources)
     ListView mSourcesLv;
 
+    @BindView(R.id.lstMode)
+    ListView lstMode;
+
     @BindView(R.id.gv_display)
     public GridLayout gv_display;
     @BindView(R.id.linearLayout_fDisplayLayout_splitScreen)
@@ -64,13 +73,13 @@ public class DisplayLayoutFragment extends Fragment implements AdapterView.OnIte
 //    @BindView(R.id.constraintLayout_fDisplayLayout_splitScreen)
 //    ConstraintLayout mSplitScreenGrep;
 
-    private String mSelectSource;
+    private Source mSelectSource;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    String[] sources = {"全景相机", "术野摄像机", "无影灯", "手术床", "吊塔"};
 
+    private List<Source> mSources;
 
     //---构造必须-----
     public DisplayLayoutFragment() {
@@ -106,6 +115,7 @@ public class DisplayLayoutFragment extends Fragment implements AdapterView.OnIte
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+
     }
 
     @Override
@@ -116,7 +126,8 @@ public class DisplayLayoutFragment extends Fragment implements AdapterView.OnIte
         ButterKnife.bind(this, contentView);
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
-        init();
+
+        createModeView();
         return contentView;
     }
 
@@ -124,6 +135,31 @@ public class DisplayLayoutFragment extends Fragment implements AdapterView.OnIte
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //加载信号源
+        HttpClient.newInit().getAllSource().enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //http访问异常
+                //EventBus.getDefault().post(new LoginActivity.LoginActivityEvent(-1, "服务器连接失败"));
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                //http访问有返回
+                try {
+
+                    Gson gson = new Gson();
+                    SourceResponse dr = gson.fromJson(response.body().string(), SourceResponse.class);
+                    List<Source> ds = dr.getData();
+
+                    EventBus.getDefault().post(new LoadSourceEvent(ds));
+
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
 
         //加载显示器
         HttpClient.newInit().getAllDisplay().enqueue(new Callback() {
@@ -140,9 +176,6 @@ public class DisplayLayoutFragment extends Fragment implements AdapterView.OnIte
 
                     Gson gson = new Gson();
                     DisplayResponse dr = gson.fromJson(response.body().string(), DisplayResponse.class);
-
-                    String[] from = {"Name", "CurrentSignalName"};
-                    //int[] to = {R.id.display_item_name, R.id.display_item_source};
                     List<Display> ds = dr.getData();
 
                     EventBus.getDefault().post(new LoadDisplayEvent(ds));
@@ -154,15 +187,55 @@ public class DisplayLayoutFragment extends Fragment implements AdapterView.OnIte
             }
         });
 
+
+        //todo 加载多画面状态
+        HttpClient.newInit().getMultiScreenState().enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //http访问异常
+                //EventBus.getDefault().post(new LoginActivity.LoginActivityEvent(-1, "服务器连接失败"));
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                //http访问有返回
+                try {
+
+                    Gson gson = new Gson();
+                    MultiScreenResponse dr = gson.fromJson(response.body().string(), MultiScreenResponse.class);
+
+                    MultiScreen screen = dr.getData();
+
+                    EventBus.getDefault().post(new LoadMultiStateEvent(screen));
+
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
     }
     /**
-     * 前台处理事件
+     * 前台加载信号源处理事件
      *
      * @param event
      */
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onLoadEvent(LoadDisplayEvent event) {
+    public void onLoadEvent(LoadMultiStateEvent event) {
+        if(event.screen==null)
+            return;
+        lstMode.setSelection(event.screen.getID() -1);
+    }
+    /**
+     * 前台加载信号源处理事件
+     *
+     * @param event
+     */
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onLoadEvent(LoadSourceEvent event) {
+
 //        DisplayAdapter adapter = new DisplayAdapter(getContext(), R.layout.display_item, event._datas);
 //        gv_display.setAdapter(adapter);
 //        gv_display.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -172,9 +245,110 @@ public class DisplayLayoutFragment extends Fragment implements AdapterView.OnIte
 //                btn.setText("aaa");
 //            }
 //        });
+        mSources = event._datas;
+
+        ArrayAdapter<Source> adapter = new ArrayAdapter<Source>(this.getActivity(), android.R.layout.simple_list_item_1, mSources);
+        mSourcesLv.setAdapter(adapter);
+        mSourcesLv.setOnItemClickListener(this);
+    }
+
+    private void createModeView() {
+        String[] modes = new String[]{"", "", "", "", "", "", ""};
+        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, modes);
+        lstMode.setAdapter(new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, modes) {
+            LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                ImageView img = new ImageView(getContext());
+
+                Bitmap tmpBitmap;
+                switch (position){
+                    case 0:
+                        tmpBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.split_screen01);
+                        break;
+                    case 1:
+                        tmpBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.split_screen02);
+                        break;
+                    case 2:
+                        tmpBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.split_screen03);
+                        break;
+                    case 3:
+                        tmpBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.split_screen04);
+                        break;
+                    case 4:
+                        tmpBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.split_screen05);
+                        break;
+                    case 5:
+                        tmpBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.split_screen06);
+                        break;
+                    default:
+                        tmpBitmap = null;
+
+                }
+
+
+                img.setScaleType(ImageView.ScaleType.FIT_XY);
+                img.setImageBitmap(tmpBitmap);
+                return img;
+            }
+        });
+        lstMode.setOnItemClickListener(new ListView.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0: {
+                        SplitScreen1Fragment splitScreen1 = SplitScreen1Fragment.newInstance("", "");
+                        switchSplitScreen(splitScreen1);
+                    }
+                    break;
+                    case 1: {
+                        SplitScreen2Fragment splitScreen2 = SplitScreen2Fragment.newInstance("", "");
+                        switchSplitScreen(splitScreen2);
+                    }
+                    break;
+                    case 2: {
+                        SplitScreen3Fragment splitScreen3 = SplitScreen3Fragment.newInstance("", "");
+                        switchSplitScreen(splitScreen3);
+                    }
+                    break;
+                    case 3: {
+                        SplitScreen4Fragment splitScreen4 = SplitScreen4Fragment.newInstance("", "");
+                        switchSplitScreen(splitScreen4);
+                    }
+                    break;
+                    case 4: {
+                        SplitScreen5Fragment splitScreen5 = SplitScreen5Fragment.newInstance("", "");
+                        switchSplitScreen(splitScreen5);
+                    }
+                    break;
+                    case 5: {
+                        SplitScreen6Fragment splitScreen6 = SplitScreen6Fragment.newInstance("", "");
+                        switchSplitScreen(splitScreen6);
+                    }
+                    break;
+
+                }
+            }
+        });
+
+    }
+
+
+    /**
+     * 前台处理事件
+     *
+     * @param event
+     */
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onLoadEvent(LoadDisplayEvent event) {
+
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
 
-        for(int i = 0;i< event._datas.size();i++){
+        for (int i = 0; i < event._datas.size(); i++) {
             Display d = event._datas.get(i);
             View view = inflater.inflate(R.layout.display_item, null);
             TextView textName = view.findViewById(R.id.display_item_name);
@@ -183,16 +357,17 @@ public class DisplayLayoutFragment extends Fragment implements AdapterView.OnIte
             Button btnSource = view.findViewById(R.id.display_item_source);
             btnSource.setText(d.getCurrentSignalName());
 
-            gv_display.setOnClickListener(new View.OnClickListener() {
+            btnSource.setOnClickListener(new Button.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Button btn = (Button) v;
+                    btn.setText(mSelectSource.getName());
                 }
             });
 
             GridLayout.Spec rowSpec = GridLayout.spec(i / 2, 1f);
             GridLayout.Spec columnSpec = GridLayout.spec(i % 2, 1f);
-            GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams(rowSpec,columnSpec);
+            GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams(rowSpec, columnSpec);
             layoutParams.height = 0;
             layoutParams.width = 0;
             view.setLayoutParams(layoutParams);
@@ -201,21 +376,12 @@ public class DisplayLayoutFragment extends Fragment implements AdapterView.OnIte
 
 
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         if (EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().unregister(this);
-    }
-
-    //-------------chao end----------------
-    private void init() {
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this.getActivity(), android.R.layout.simple_list_item_1, sources);
-        mSourcesLv.setAdapter(adapter);
-        mSourcesLv.setOnItemClickListener(this);
-
     }
 
 
@@ -252,7 +418,7 @@ public class DisplayLayoutFragment extends Fragment implements AdapterView.OnIte
      */
     private void doChangeScreen(View selectView) {
         if (null != mSelectSource) {
-            ((Button) selectView).setText(mSelectSource);
+            ((Button) selectView).setText(mSelectSource.getName());
         }
     }
 
@@ -263,54 +429,22 @@ public class DisplayLayoutFragment extends Fragment implements AdapterView.OnIte
      */
     private void doChangeMonitor(View selectView) {
         if (null != mSelectSource) {
-            ((Button) selectView).setText(mSelectSource);
+            ((Button) selectView).setText(mSelectSource.getName());
             String p = selectView.getTag().toString();
         }
     }
 
 
-    @OnClick({R.id.imageButton_fDisplayLayout_screen1,
-            R.id.imageButton_fDisplayLayout_screen2,
-            R.id.imageButton_fDisplayLayout_screen3,
-            R.id.imageButton_fDisplayLayout_screen4,
-            R.id.imageButton_fDisplayLayout_screen5,
-            R.id.imageButton_fDisplayLayout_screen6,})
-    public void imageButtonOnClick(View v) {
-        switch (v.getId()) {
-            case R.id.imageButton_fDisplayLayout_screen1: {
-                SplitScreen1Fragment splitScreen1 = SplitScreen1Fragment.newInstance("", "");
-                switchSplitScreen(splitScreen1);
-            }
-            break;
-            case R.id.imageButton_fDisplayLayout_screen2: {
-                SplitScreen2Fragment splitScreen2 = SplitScreen2Fragment.newInstance("", "");
-                switchSplitScreen(splitScreen2);
-            }
-            break;
-            case R.id.imageButton_fDisplayLayout_screen3: {
-                SplitScreen3Fragment splitScreen3 = SplitScreen3Fragment.newInstance("", "");
-                switchSplitScreen(splitScreen3);
-            }
-            break;
-            case R.id.imageButton_fDisplayLayout_screen4: {
-                SplitScreen4Fragment splitScreen4 = SplitScreen4Fragment.newInstance("", "");
-                switchSplitScreen(splitScreen4);
-            }
-            break;
-            case R.id.imageButton_fDisplayLayout_screen5: {
-                SplitScreen5Fragment splitScreen5 = SplitScreen5Fragment.newInstance("", "");
-                switchSplitScreen(splitScreen5);
-            }
-            break;
-            case R.id.imageButton_fDisplayLayout_screen6: {
-                SplitScreen6Fragment splitScreen6 = SplitScreen6Fragment.newInstance("", "");
-                switchSplitScreen(splitScreen6);
-            }
-            break;
-
-        }
-
-    }
+//    @OnClick({R.id.imageButton_fDisplayLayout_screen1,
+//            R.id.imageButton_fDisplayLayout_screen2,
+//            R.id.imageButton_fDisplayLayout_screen3,
+//            R.id.imageButton_fDisplayLayout_screen4,
+//            R.id.imageButton_fDisplayLayout_screen5,
+//            R.id.imageButton_fDisplayLayout_screen6,})
+//    public void imageButtonOnClick(View v) {
+//
+//
+//    }
 
 
     @OnCheckedChanged(R.id.toggleButton_displayLayout_switchSettings)
@@ -342,17 +476,19 @@ public class DisplayLayoutFragment extends Fragment implements AdapterView.OnIte
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        mSelectSource = sources[position];
+        mSelectSource = mSources.get(position);
     }
 
 
-    public static class LoadDisplayEvent{
+    public static class LoadDisplayEvent {
         public List<Display> _datas;
-        public LoadDisplayEvent(List<Display> data)        {
+
+        public LoadDisplayEvent(List<Display> data) {
             _datas = data;
         }
 
     }
+
     public static class DisplayLayoutEvent {
         public static final int CODE_CHANGE_MONITOR = 0x11;
         public static final int CODE_CHANGE_SCREEN = 0x12;
@@ -363,6 +499,21 @@ public class DisplayLayoutFragment extends Fragment implements AdapterView.OnIte
         public DisplayLayoutEvent(int code, View selectView) {
             this.code = code;
             this.selectView = selectView;
+        }
+    }
+
+    public static class LoadSourceEvent {
+        public List<Source> _datas;
+
+        public LoadSourceEvent(List<Source> data) {
+            _datas = data;
+        }
+    }
+
+    public static class LoadMultiStateEvent{
+        public MultiScreen screen;
+        public LoadMultiStateEvent(MultiScreen screen){
+            this.screen = screen;
         }
     }
 }

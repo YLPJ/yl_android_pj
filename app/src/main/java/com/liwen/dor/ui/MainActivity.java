@@ -50,14 +50,18 @@ public class MainActivity extends AppCompatActivity {
     ControlLayoutFragment controlLayout;
 
     private void doDisplayLayout(){
-        DisplayLayoutFragment displayLayout = DisplayLayoutFragment.newInstance("","");
+        if(displayLayout == null) {
+            displayLayout = DisplayLayoutFragment.newInstance("", "");
+        }
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager. beginTransaction();
         transaction.replace(R.id.frameLayout_main, displayLayout);
         transaction.commit();
     }
     private void doControlLayout(){
-        ControlLayoutFragment controlLayout = ControlLayoutFragment.newInstance("","");
+        if(controlLayout==null) {
+            controlLayout = ControlLayoutFragment.newInstance("", "");
+        }
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager. beginTransaction();
         transaction.replace(R.id.frameLayout_main, controlLayout);
