@@ -1,14 +1,15 @@
 package com.liwen.dor.ui.fragment;
 
-import android.app.Fragment;
 import android.os.Bundle;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
+import android.app.Fragment;
 import com.liwen.dor.R;
 
 import org.greenrobot.eventbus.EventBus;
@@ -17,45 +18,42 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by ldn on 2018/5/3.
  */
 
-public class ControlLayoutFragment extends Fragment implements AdapterView.OnItemClickListener{
+public class ControlLayoutFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    private CameraFragment fragmentCamera;
+    private LightFragment fragmentLight;
+    private BedFragment fragmentBed;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    String[] sources = {"摄像头", "灯", "床", "塔"};
+    String[] sources = {"摄像头", "灯", "床"};
 
     @BindView(R.id.list_fContorlLayout_sources)
     ListView list_fContorlLayout_sources;
 
     //初始化 摄像头控制布局
-    @BindView(R.id.constraintLayout_control_Layout_camera)
-    public View constraintLayout_control_Layout_camera;
-    //初始化 灯控制布局
-    @BindView(R.id.constraintLayout_control_Layout_light)
-    public View constraintLayout_control_Layout_light;
-    //初始化 床控制布局
-    @BindView(R.id.constraintLayout_control_Layout_bed)
-    public View constraintLayout_control_Layout_bed;
-    //初始化 塔控制布局
-    @BindView(R.id.constraintLayout_control_Layout_tower)
-    public View constraintLayout_control_Layout_tower;
-
+    @BindView(R.id.fragmentControl)
+    public View frameHost;
 
     //---构造必须有---
     public ControlLayoutFragment() {
         // Required empty public constructor
+
+        fragmentCamera = CameraFragment.newInstance("", "");
+        fragmentLight = LightFragment.newInstance("", "");
+        fragmentBed = BedFragment.newInstance("", "");
     }
 
 
@@ -123,6 +121,7 @@ public class ControlLayoutFragment extends Fragment implements AdapterView.OnIte
 
         }
     }
+
     /**
      * 左侧list点击事件
      *
@@ -133,34 +132,26 @@ public class ControlLayoutFragment extends Fragment implements AdapterView.OnIte
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//        mSelectSource = sources[position];
-        if(position<=3) {
+
+        Fragment tmpview = null;
+        if (position <= 3) {
             switch (position) {
                 case 0:
-                    constraintLayout_control_Layout_camera.setVisibility(View.VISIBLE);
-                    constraintLayout_control_Layout_light.setVisibility(View.GONE);
-                    constraintLayout_control_Layout_bed.setVisibility(View.GONE);
-                    constraintLayout_control_Layout_tower.setVisibility(View.GONE);
+                    tmpview = fragmentCamera;
                     break;
                 case 1:
-                    constraintLayout_control_Layout_camera.setVisibility(View.GONE);
-                    constraintLayout_control_Layout_light.setVisibility(View.VISIBLE);
-                    constraintLayout_control_Layout_bed.setVisibility(View.GONE);
-                    constraintLayout_control_Layout_tower.setVisibility(View.GONE);
+                    tmpview = fragmentLight;
                     break;
                 case 2:
-                    constraintLayout_control_Layout_camera.setVisibility(View.GONE);
-                    constraintLayout_control_Layout_light.setVisibility(View.GONE);
-                    constraintLayout_control_Layout_bed.setVisibility(View.VISIBLE);
-                    constraintLayout_control_Layout_tower.setVisibility(View.GONE);
-                    break;
-                case 3:
-                    constraintLayout_control_Layout_camera.setVisibility(View.GONE);
-                    constraintLayout_control_Layout_light.setVisibility(View.GONE);
-                    constraintLayout_control_Layout_bed.setVisibility(View.GONE);
-                    constraintLayout_control_Layout_tower.setVisibility(View.VISIBLE);
+                    tmpview = fragmentBed;
                     break;
             }
+            if (tmpview == null)
+                return;
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.fragmentControl, tmpview);
+            transaction.commit();
         }
     }
 

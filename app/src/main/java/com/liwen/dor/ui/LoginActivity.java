@@ -78,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
             case LoginActivityEvent.DO_LOGIN_YZ:
                 showMsg("用户名或密码错误");
                 break;
-            case LoginActivityEvent.DO_SHOW_ERROR:
+            default:
                 showMsg(event.getMassage());
                 break;
         }

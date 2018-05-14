@@ -1,0 +1,115 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context="com.liwen.dor.ui.fragment.BedFragment">
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical">
+        <GridLayout android:layout_width="match_parent"
+                  android:layout_height="0dp"
+                  android:layout_weight="3"
+                    android:layout_margin="10dp"
+        >
+            <ImageButton android:layout_width="66dp"
+                         android:layout_height="66dp"
+                         android:src="@mipmap/bed_up"
+                         android:layout_column="0"
+                         android:layout_rowWeight="1"
+                         android:layout_columnWeight="1"
+                         android:scaleX="0.5" android:scaleY="0.5" android:scaleType="fitCenter"/>
+            <ImageButton android:layout_width="66dp"
+                         android:layout_height="66dp"
+                         android:src="@mipmap/bed_h_down"
+                         android:layout_column="1"
+                         android:layout_rowWeight="1"
+                         android:layout_columnWeight="1"
+                         android:scaleX="0.5" android:scaleY="0.5" android:scaleType="fitCenter"/>
+            <ImageButton android:layout_width="66dp"
+                         android:layout_height="66dp"
+                         android:src="@mipmap/bed_left"
+                         android:layout_column="2"
+                         android:layout_rowWeight="1"
+                         android:layout_columnWeight="1"
+                         android:scaleX="0.5" android:scaleY="0.5" android:scaleType="fitCenter"/>
+            <ImageButton android:layout_width="66dp"
+                         android:layout_height="66dp"
+                         android:src="@mipmap/bed_t_up"
+                         android:layout_column="3"
+                         android:layout_rowWeight="1"
+                         android:layout_columnWeight="1"
+                         android:scaleX="0.5" android:scaleY="0.5" android:scaleType="fitCenter"/>
+
+            <ImageButton android:layout_width="66dp"
+                         android:layout_height="66dp"
+                         android:src="@mipmap/bed_down"
+                         android:layout_column="0"
+                         android:layout_row="1"
+                         android:layout_rowWeight="1"
+                         android:layout_columnWeight="1"
+                         android:scaleX="0.5" android:scaleY="0.5" android:scaleType="fitCenter"/>
+            <ImageButton android:layout_width="66dp"
+                         android:layout_height="66dp"
+                         android:src="@mipmap/bed_h_down"
+                         android:layout_column="1"
+                         android:layout_row="1"
+                         android:layout_rowWeight="1"
+                         android:layout_columnWeight="1"
+                         android:scaleX="0.5" android:scaleY="0.5" android:scaleType="fitCenter"/>
+            <ImageButton android:layout_width="66dp"
+                         android:layout_height="66dp"
+                         android:src="@mipmap/bed_right"
+                         android:layout_column="2"
+                         android:layout_row="1"
+                         android:layout_rowWeight="1"
+                         android:layout_columnWeight="1"
+                         android:scaleX="0.5" android:scaleY="0.5" android:scaleType="fitCenter"/>
+            <ImageButton android:layout_width="66dp"
+                         android:layout_height="66dp"
+                         android:src="@mipmap/bed_t_down"
+                         android:layout_column="3"
+                         android:layout_row="1"
+                         android:layout_rowWeight="1"
+                         android:layout_columnWeight="1"
+                         android:scaleX="0.5" android:scaleY="0.5" android:scaleType="fitCenter"/>
+        </GridLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="2dp" android:background="@color/color_text_blue"></LinearLayout>
+        <GridLayout android:layout_width="match_parent"
+                  android:layout_height="0dp"
+                  android:layout_weight="2"
+                    android:layout_marginHorizontal="40dp"
+                    android:layout_marginVertical="20dp"
+        >
+            <ImageButton android:layout_width="66dp"
+                         android:layout_height="66dp"
+                         android:src="@mipmap/bed_m1"
+                         android:layout_column="0"
+                         android:layout_rowWeight="1"
+                         android:layout_columnWeight="1"
+                         android:scaleX="0.5" android:scaleY="0.5" android:scaleType="fitCenter"/>
+            <ImageButton android:layout_width="66dp"
+                         android:layout_height="66dp"
+                         android:src="@mipmap/bed_m2"
+                         android:layout_column="1"
+                         android:layout_rowWeight="1"
+                         android:layout_columnWeight="1"
+                         android:scaleX="0.5" android:scaleY="0.5" android:scaleType="fitCenter"/>
+            <ImageButton android:layout_width="66dp"
+                         android:layout_height="66dp"
+                         android:src="@mipmap/bed_m3"
+                         android:layout_column="2"
+                         android:layout_rowWeight="1"
+                         android:layout_columnWeight="1"
+                         android:scaleX="0.5" android:scaleY="0.5" android:scaleType="fitCenter"/>
+            <ImageButton android:layout_width="66dp"
+                         android:layout_height="66dp"
+                         android:src="@mipmap/bed_m4"
+                         android:layout_column="3"
+                         android:layout_rowWeight="1"
+                         android:layout_columnWeight="1"
+                         android:scaleX="0.5" android:scaleY="0.5" android:scaleType="fitCenter"/>
+
+        </GridLayout>
+    </LinearLayout>
+
+</FrameLayout>
