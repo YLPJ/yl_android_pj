@@ -64,7 +64,6 @@ public class CameraFragment extends Fragment {
         }
     }
     @OnTouch({R.id.button_login_sign,
-            R.id.button_login_exit,
             R.id.button_netseting})
     public boolean buttonOnTouch(View v, MotionEvent event) {
         if(v.getTag()==null)

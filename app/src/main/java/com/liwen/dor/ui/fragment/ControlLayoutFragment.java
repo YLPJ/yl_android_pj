@@ -1,23 +1,31 @@
 package com.liwen.dor.ui.fragment;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.*;
 import android.app.Fragment;
 import com.liwen.dor.R;
 
+import com.liwen.dor.ui.pwd.LocusPassWordView;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 /**
  * Created by ldn on 2018/5/3.
@@ -29,6 +37,8 @@ public class ControlLayoutFragment extends Fragment implements AdapterView.OnIte
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private static boolean isUnLock = false;
 
     private CameraFragment fragmentCamera;
     private LightFragment fragmentLight;
@@ -42,6 +52,9 @@ public class ControlLayoutFragment extends Fragment implements AdapterView.OnIte
 
     @BindView(R.id.list_fContorlLayout_sources)
     ListView list_fContorlLayout_sources;
+
+    @BindView(R.id.fragmentControlRoot)
+    FrameLayout rootLayout;
 
     //初始化 摄像头控制布局
     @BindView(R.id.fragmentControl)
@@ -77,6 +90,7 @@ public class ControlLayoutFragment extends Fragment implements AdapterView.OnIte
 
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -87,6 +101,40 @@ public class ControlLayoutFragment extends Fragment implements AdapterView.OnIte
             EventBus.getDefault().register(this);
         init();
         return contentView;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(isUnLock == false){
+            showPwdView();
+        }
+    }
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void showPwdView(){
+        final LocusPassWordView pwdView = new LocusPassWordView(getContext());
+        pwdView.setBackground(new ColorDrawable(getResources().getColor(R.color.color_control_green)));
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(MATCH_PARENT,MATCH_PARENT);
+        pwdView.setLayoutParams(params);
+        pwdView.setOnCompleteListener(new LocusPassWordView.OnCompleteListener() {
+            @Override
+            public void onComplete(String password) {
+                if(password.equals("12345")){
+                    isUnLock = true;
+                    rootLayout.removeView(pwdView);
+                }
+                else{
+                    pwdView.markError();
+                }
+            }
+        });
+        rootLayout.addView(pwdView);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 
     @Override

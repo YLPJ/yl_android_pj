@@ -1,28 +1,38 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout android:id="@+id/fragmentControlRoot"
+        xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/color_title_green"
-              android:orientation="horizontal"
+              android:background="@color/color_control_green"
               tools:context="com.liwen.dor.ui.fragment.ControlLayoutFragment">
 
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="horizontal"
+    >
+        <ListView
+                android:id="@+id/list_fContorlLayout_sources"
+                android:layout_width="160dp"
+                android:layout_height="match_parent"
+                android:listSelector="@color/color_bg_blue"/>
+
+        <LinearLayout android:layout_width="1dp" android:layout_height="match_parent"
+                      android:background="@color/color_text_blue"
+        >
+
+        </LinearLayout>
+        <FrameLayout
+                android:id="@+id/fragmentControl"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
 
-    <ListView
-            android:id="@+id/list_fContorlLayout_sources"
-            android:layout_width="120dp"
-            android:layout_height="match_parent"
-            android:listSelector="@color/color_bg_blue"/>
-
-    <FrameLayout
-            android:id="@+id/fragmentControl"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+        </FrameLayout>
+    </LinearLayout>
 
 
-    </FrameLayout>
 
 
-</LinearLayout>
+</FrameLayout>

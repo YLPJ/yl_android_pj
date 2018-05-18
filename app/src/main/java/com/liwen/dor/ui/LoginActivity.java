@@ -86,7 +86,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @OnClick({R.id.button_login_sign,
-            R.id.button_login_exit,
             R.id.button_netseting})
     public void buttonOnClick(View v) {
         switch (v.getId()) {
@@ -94,8 +93,6 @@ public class LoginActivity extends AppCompatActivity {
                 doMainActivity();
             }
             break;
-            case R.id.button_login_exit:
-                break;
             case R.id.button_netseting:
                 //TODO 跳转到网络设置页面，并且不消亡本页面（设置网络后返回本页的时候不需要新new）
                 startActivity(new Intent(this, IPconfigActivity.class));

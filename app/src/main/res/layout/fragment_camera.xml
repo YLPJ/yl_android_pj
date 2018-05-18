@@ -72,18 +72,36 @@
                           android:orientation="vertical"
                           android:layout_marginLeft="20dp"
             >
-                <Button android:layout_width="120dp" android:layout_height="60dp" android:layout_marginTop="10dp" android:text="拉近"/>
-                <Button android:layout_width="120dp" android:layout_height="60dp" android:layout_marginTop="10dp" android:text="1"/>
-                <Button android:layout_width="120dp" android:layout_height="60dp" android:layout_marginTop="10dp" android:text="3"/>
+                <Button android:layout_width="120dp" android:layout_height="60dp" android:layout_marginTop="10dp"
+                        android:text="拉近" style="@style/Widget.AppCompat.Button.Colored"
+                        android:background="#5b5b5b"
+                />
+                <Button android:layout_width="120dp" android:layout_height="60dp" android:layout_marginTop="10dp" android:text="1"
+                        style="@style/Widget.AppCompat.Button.Colored"
+                        android:background="#5b5b5b"
+                />
+                <Button android:layout_width="120dp" android:layout_height="60dp" android:layout_marginTop="10dp" android:text="3"
+                        style="@style/Widget.AppCompat.Button.Colored"
+                        android:background="#5b5b5b"
+                />
             </LinearLayout>
             <LinearLayout android:layout_width="wrap_content"
                           android:layout_height="match_parent"
                           android:orientation="vertical"
                           android:layout_marginLeft="20dp"
             >
-                <Button android:layout_width="120dp" android:layout_height="60dp" android:layout_marginTop="10dp" android:text="拉近"/>
-                <Button android:layout_width="120dp" android:layout_height="60dp" android:layout_marginTop="10dp" android:text="2"/>
-                <Button android:layout_width="120dp" android:layout_height="60dp" android:layout_marginTop="10dp" android:text="4"/>
+                <Button android:layout_width="120dp" android:layout_height="60dp" android:layout_marginTop="10dp" android:text="拉近"
+                        style="@style/Widget.AppCompat.Button.Colored"
+                        android:background="#5b5b5b"
+                />
+                <Button android:layout_width="120dp" android:layout_height="60dp" android:layout_marginTop="10dp" android:text="2"
+                        style="@style/Widget.AppCompat.Button.Colored"
+                        android:background="#5b5b5b"
+                />
+                <Button android:layout_width="120dp" android:layout_height="60dp" android:layout_marginTop="10dp" android:text="4"
+                        style="@style/Widget.AppCompat.Button.Colored"
+                        android:background="#5b5b5b"
+                />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
