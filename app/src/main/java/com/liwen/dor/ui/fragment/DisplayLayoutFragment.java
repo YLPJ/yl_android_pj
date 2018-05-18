@@ -1,20 +1,15 @@
 package com.liwen.dor.ui.fragment;
 
-import android.app.Application;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
-import android.content.pm.ApplicationInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,14 +18,10 @@ import android.widget.*;
 import com.google.gson.Gson;
 import com.liwen.dor.R;
 
-import com.liwen.dor.entity.BaseEvent;
 import com.liwen.dor.entity.Display;
 import com.liwen.dor.entity.MultiScreen;
 import com.liwen.dor.entity.Source;
 import com.liwen.dor.entity.json.*;
-import com.liwen.dor.ui.DisplayAdapter;
-import com.liwen.dor.ui.LoginActivity;
-import com.liwen.dor.ui.MainActivity;
 import com.liwen.dor.util.HttpClient;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -42,7 +33,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
-import butterknife.OnClick;
 
 import java.io.IOException;
 import java.util.List;
@@ -215,6 +205,7 @@ public class DisplayLayoutFragment extends Fragment implements AdapterView.OnIte
             }
         });
     }
+
     /**
      * 前台加载信号源处理事件
      *
@@ -223,10 +214,11 @@ public class DisplayLayoutFragment extends Fragment implements AdapterView.OnIte
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onLoadEvent(LoadMultiStateEvent event) {
-        if(event.screen==null)
+        if (event.screen == null)
             return;
-        lstMode.setSelection(event.screen.getID() -1);
+        lstMode.setSelection(event.screen.getID() - 1);
     }
+
     /**
      * 前台加载信号源处理事件
      *
@@ -264,7 +256,7 @@ public class DisplayLayoutFragment extends Fragment implements AdapterView.OnIte
                 ImageView img = new ImageView(getContext());
 
                 Bitmap tmpBitmap;
-                switch (position){
+                switch (position) {
                     case 0:
                         tmpBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.split_screen01);
                         break;
@@ -294,7 +286,7 @@ public class DisplayLayoutFragment extends Fragment implements AdapterView.OnIte
                 return img;
             }
         });
-        lstMode.setOnItemClickListener(new ListView.OnItemClickListener(){
+        lstMode.setOnItemClickListener(new ListView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -356,12 +348,20 @@ public class DisplayLayoutFragment extends Fragment implements AdapterView.OnIte
 
             Button btnSource = view.findViewById(R.id.display_item_source);
             btnSource.setText(d.getCurrentSignalName());
+            btnSource.setTag(d.getID());
 
             btnSource.setOnClickListener(new Button.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Button btn = (Button) v;
                     btn.setText(mSelectSource.getName());
+                    try {
+                        int displayId = Integer.parseInt(btn.getTag().toString());
+                        HttpClient.newInit().switchDisplay(displayId, mSelectSource.getID());
+                    } catch (Exception ex) {
+
+                    }
+
                 }
             });
 
@@ -419,6 +419,8 @@ public class DisplayLayoutFragment extends Fragment implements AdapterView.OnIte
     private void doChangeScreen(View selectView) {
         if (null != mSelectSource) {
             ((Button) selectView).setText(mSelectSource.getName());
+
+            HttpClient.newInit().switchModeSource(Integer.parseInt(selectView.getTag().toString()), mSelectSource.getID());
         }
     }
 
@@ -495,10 +497,12 @@ public class DisplayLayoutFragment extends Fragment implements AdapterView.OnIte
 
         public int code;
         View selectView;
+        int modeId;
 
-        public DisplayLayoutEvent(int code, View selectView) {
+        public DisplayLayoutEvent(int code, View selectView, int modeId) {
             this.code = code;
             this.selectView = selectView;
+            this.modeId = modeId;
         }
     }
 
@@ -510,9 +514,10 @@ public class DisplayLayoutFragment extends Fragment implements AdapterView.OnIte
         }
     }
 
-    public static class LoadMultiStateEvent{
+    public static class LoadMultiStateEvent {
         public MultiScreen screen;
-        public LoadMultiStateEvent(MultiScreen screen){
+
+        public LoadMultiStateEvent(MultiScreen screen) {
             this.screen = screen;
         }
     }

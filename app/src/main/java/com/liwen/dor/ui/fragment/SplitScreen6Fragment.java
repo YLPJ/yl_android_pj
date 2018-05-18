@@ -68,6 +68,6 @@ public class SplitScreen6Fragment extends Fragment{
             R.id.button_fSplitScreen1_screen63,
             R.id.button_fSplitScreen1_screen64})
     public void buttonOnClick(View v){
-        EventBus.getDefault().post(new DisplayLayoutFragment.DisplayLayoutEvent(DisplayLayoutFragment.DisplayLayoutEvent.CODE_CHANGE_SCREEN, v));
+        EventBus.getDefault().post(new DisplayLayoutFragment.DisplayLayoutEvent(DisplayLayoutFragment.DisplayLayoutEvent.CODE_CHANGE_SCREEN, v, 6));
     }
 }

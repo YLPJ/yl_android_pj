@@ -3,6 +3,7 @@ package com.liwen.dor.util;
 import com.liwen.dor.constant.SPConstant;
 import org.xutils.HttpManager;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
@@ -38,7 +39,6 @@ public class HttpClient {
     }
 
 
-
     public Call getAllDisplay() {
         String path = "/getDisplay";
         Request request = new Request.Builder().get()
@@ -47,7 +47,7 @@ public class HttpClient {
         return client.newCall(request);
     }
 
-    public Call getAllSource(){
+    public Call getAllSource() {
         Request request = new Request.Builder().get()
                 .url(url + "/getAllSource")
                 .build();
@@ -62,12 +62,37 @@ public class HttpClient {
         return client.newCall(request);
     }
 
-    public Call getMultiScreenState(){
+    public Call getMultiScreenState() {
         Request request = new Request.Builder().get()
                 .url(url + "/getMultiState")
                 .build();
         return client.newCall(request);
     }
 
+    public Call switchDisplay(int displayId, String sourceId) {
+        Request request = new Request.Builder().get()
+                .url(String.format("%s/switch?d=%d&s=%s", url, displayId, sourceId))
+                .build();
+        return client.newCall(request);
+    }
+
+    public Call switchModeSource(int posi, String sourceId) {
+        Request request = new Request.Builder().get()
+                .url(String.format("%s/multiSwitch?p=%d&s=%s", url, posi, sourceId))
+                .build();
+        return client.newCall(request);
+    }
+
+    public Call controlDev(int devId, String cmd, List<String> params) {
+        StringBuilder sbParam = new StringBuilder();
+        for(String s : params){
+            sbParam.append(",");
+            sbParam.append(s);
+        }
+        Request request = new Request.Builder().get()
+                .url(String.format("%s/control?d=%d&c=%s&p=%s", url, devId, cmd, sbParam.toString().substring(1)))
+                .build();
+        return client.newCall(request);
+    }
 
 }
