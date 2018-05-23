@@ -108,7 +108,7 @@ public class ControlLayoutFragment extends Fragment implements AdapterView.OnIte
     public void onStart() {
         super.onStart();
         if(isUnLock == false){
-            showPwdView();
+//            showPwdView();
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -147,7 +147,7 @@ public class ControlLayoutFragment extends Fragment implements AdapterView.OnIte
     private void init() {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this.getActivity(), android.R.layout.simple_list_item_1, sources);
+                this.getActivity(), R.layout.custom_list_item, sources);
         list_fContorlLayout_sources.setAdapter(adapter);
         list_fContorlLayout_sources.setOnItemClickListener(this);
     }

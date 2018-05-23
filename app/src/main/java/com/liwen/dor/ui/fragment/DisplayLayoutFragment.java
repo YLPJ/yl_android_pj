@@ -239,7 +239,7 @@ public class DisplayLayoutFragment extends Fragment implements AdapterView.OnIte
 //        });
         mSources = event._datas;
 
-        ArrayAdapter<Source> adapter = new ArrayAdapter<Source>(this.getActivity(), android.R.layout.simple_list_item_1, mSources);
+        ArrayAdapter<Source> adapter = new ArrayAdapter<Source>(this.getActivity(), R.layout.custom_list_item, mSources);
         mSourcesLv.setAdapter(adapter);
         mSourcesLv.setOnItemClickListener(this);
     }
@@ -247,7 +247,7 @@ public class DisplayLayoutFragment extends Fragment implements AdapterView.OnIte
     private void createModeView() {
         String[] modes = new String[]{"", "", "", "", "", "", ""};
         //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, modes);
-        lstMode.setAdapter(new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, modes) {
+        lstMode.setAdapter(new ArrayAdapter<String>(this.getActivity(), R.layout.custom_list_item, modes) {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
 
             @NonNull
